@@ -1,0 +1,17 @@
+version: "3.7" # Versi docker compose
+services: # Setting service
+  item-app: # membuat service item-app
+    image: "ghcr.io/jimmyready89/item-app:v1" # Menggunakan image "ghcr.io/jimmyready89/item-app:v1" untuk service item-app
+    ports: # Setting output port
+      - "80:8080" # Setting output port internal docker 8080 ke port 80 
+    depends_on:
+      - "item-db" # Menjalankan service item-app setelah service item-db berjalan
+    restart: "always" # setting restart policy selalu restart ketika terhenti
+  item-db: # membuat service item-db
+    image: mongo:3 # Menggunakan image "mongo:3" untuk service item-db
+    volumes: # setting volumes 
+      - app-db:/data/db # menyimpan data di folder /data/db ke volumes app-db
+    restart: "always" # setting restart policy selalu restart ketika terhenti
+
+volumes: # setting volumes
+  app-db: # membuat volumes app-db
