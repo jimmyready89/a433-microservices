@@ -1,14 +1,14 @@
 version: '2.1'
-jobs:
-  lintdockerfile:
-    docker:
-      - image: circleci/docker@2.2.0
+orb:
+  jobs:
+    lintdockerfile:
+      docker: circleci/docker@2.2.0
 
-    steps:
-      - checkout
-      - dockler/dockerlint:
-          dockerfile: ./Dockerfile
-          treat-warnings-as-errors: true
+      steps:
+        - checkout
+        - dockler/dockerlint:
+            dockerfile: ./Dockerfile
+            treat-warnings-as-errors: true
 
 workflows:
   lint-dockerfile:
