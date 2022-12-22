@@ -6,7 +6,7 @@ jobs:
 
     steps:
       - checkout
-      - dockerlint:
+      - dockler/dockerlint:
           dockerfile: ./Dockerfile
           treat-warnings-as-errors: true
 
