@@ -1,21 +1,15 @@
 version: '2.1'
 orbs:
+  docker: circleci/docker@2.2.0
   jobs:
-    lintdockerfile:
-      docker:
-        - image: circleci/docker@2.2.0
-
+    lint:
+      executor: docker/machine
       steps:
         - checkout
-        - dockerlint:
+        - docker/dockerlint:
             dockerfile: ./Dockerfile
             treat-warnings-as-errors: true
-
 workflows:
-  sample:
-    lint-dockerfile:
-      - lintdockerfile
-    # test-app:
-      # - testapp
-    # build-app-karsajobs:
-      # - buildappkarsajobs
+  lint-dockerfile:
+    jobs:
+      - lint
