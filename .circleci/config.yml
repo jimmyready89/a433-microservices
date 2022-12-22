@@ -11,11 +11,10 @@ jobs:
           treat-warnings-as-errors: true
 
 workflows:
-  sample:
-    lint-dockerfile:
-      jobs:
-        - lintdockerfile
-    # test-app:
-      # - testapp
-    # build-app-karsajobs:
-      # - buildappkarsajobs
+  lint-dockerfile:
+    jobs:
+      - lintdockerfile
+  # test-app:
+    # - testapp
+  # build-app-karsajobs:
+    # - buildappkarsajobs
