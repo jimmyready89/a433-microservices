@@ -6,7 +6,8 @@ orb:
 
       steps:
         - checkout
-        - dockler/dockerlint:
+        - dockler/dockerlint
+        - run:
             dockerfile: ./Dockerfile
             treat-warnings-as-errors: true
 
