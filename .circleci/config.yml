@@ -3,11 +3,11 @@ orbs:
   docker: circleci/docker@2.2.0
   jobs:
     lint:
-      executor: docker/machine
+      executor: docker
       steps:
         - checkout
         - docker:
-            dockerfile: path/to/and/name/of/Dockerfile
+            dockerfile: ./Dockerfile
             treat-warnings-as-errors: true
 workflows:
   lint-dockerfile:
