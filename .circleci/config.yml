@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   docker: circleci/docker@2.2.0
-  go: circleci/go@1.7.1
+  go: cimg/go:1.18.1
 jobs:
   lint-dockerfile:
     executor: docker/machine
@@ -11,13 +11,11 @@ jobs:
           dockerfile: ./Dockerfile
           treat-warnings-as-errors: true
   test-app:
-    executor: 
-      name: go/default
-      tag: '1.16'
+    executor: go/default
+    parallelism: 4
+    resource_class: large
+    working_directory: ./
     steps:
-      - run:
-          command: go mod download
-          name: go mod download
       - run:
           command: go test -v -short --count=1 $(go list ./...)
           name: go test
