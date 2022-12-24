@@ -14,10 +14,12 @@ jobs:
       - image: cimg/go:1.18.1
     resource_class: large
     steps:
+      - checkout
       - run:
           command: go test -v -short --count=1 $(go list ./...)
           name: go test
 workflows:
+  version: 2
   workflow:
     jobs:
       - lint-dockerfile
