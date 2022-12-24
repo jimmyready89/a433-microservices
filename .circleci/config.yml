@@ -12,9 +12,7 @@ jobs:
   test-app:
     docker:
       - image: cimg/go:1.18.1
-    parallelism: 4
     resource_class: large
-    working_directory: ./
     steps:
       - run:
           command: go test -v -short --count=1 $(go list ./...)
