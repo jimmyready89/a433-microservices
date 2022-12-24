@@ -1,7 +1,6 @@
 version: 2.1
 orbs:
   docker: circleci/docker@2.2.0
-  go: cimg/go:1.18.1
 jobs:
   lint-dockerfile:
     executor: docker/machine
@@ -11,7 +10,8 @@ jobs:
           dockerfile: ./Dockerfile
           treat-warnings-as-errors: true
   test-app:
-    executor: go/default
+    docker:
+      - image: cimg/go:1.18.1
     parallelism: 4
     resource_class: large
     working_directory: ./
