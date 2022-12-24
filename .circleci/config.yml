@@ -19,6 +19,9 @@ jobs:
       - go/mod-download
       - go/save-cache
       - run:
+          command: go mod download
+          name: go mod download
+      - run:
           command: go test -v -short --count=1 $(go list ./...)
           name: go test
 workflows:
