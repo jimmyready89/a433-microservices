@@ -11,9 +11,7 @@ jobs:
           dockerfile: ./Dockerfile
           treat-warnings-as-errors: true
   test-app:
-    executor:
-      name: go/default
-      tag: '1.16'
+    executor: go/default
     steps:
       - checkout
       - go/load-cache
