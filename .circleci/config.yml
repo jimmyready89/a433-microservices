@@ -20,23 +20,23 @@ jobs: #Setting jobs
           name: run unit test #Command nama step
   build-app-karsajobs: #Setting build-app-karsajobs
     executor: docker/docker #Mengunakan orbs docker dengan element docker
-    steps:
+    steps: #Setting steps Jobs  build-app-karsajobs
       - checkout #Melakukan checkout script
-      - setup_remote_docker
-      - run:
-          name: Build Image
-          command: |
+      - setup_remote_docker #Melakukan setup remote docker
+      - run: #Melakukan menjalan command
+          name: Build Image #Command nama step
+          command: | #Command perintah build image
             docker build -t ghcr.io/$Username/karsajobs:latest .
-      - deploy:
-          name: Push image to github
-          command: |
+      - deploy: #Melakukan deploy
+          name: Push image to github #Command nama step
+          command: | #Command perintah build image dan push ke github
             echo $PASSWORD_GITHUB | docker login ghcr.io -u $Username --password-stdin
             docker push ghcr.io/$Username/karsajobs:latest
 
-workflows:
-  version: 2
-  workflow:
-    jobs:
-      - lint-dockerfile
-      - test-app
-      - build-app-karsajobs
+workflows: #Setting Workflows
+  version: 2 #Versi workflows
+  workflow: #Setting Workflow
+    jobs: #Menjalankan jobs
+      - lint-dockerfile #Menjalankan job lint-dockerfile
+      - test-app #Menjalankan job test-app
+      - build-app-karsajobs #Menjalankan job build-app-karsajobs
