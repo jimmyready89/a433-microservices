@@ -1,0 +1,60 @@
+#Version CircleCI
+version: 2.1
+#orbs
+orbs:
+  #Declare orbs docker dengan isi circleci/docker@2.2.0
+  docker: circleci/docker@2.2.0
+#Setting jobs
+jobs:
+  #Setting Jobs lint-dockerfile
+  lint-dockerfile:
+    #Mengunakan orbs docker dengan element machine
+    executor: docker/machine
+    #Setting steps Jobs lint-dockerfile
+    steps:
+      #Melakukan checkout script
+      - checkout
+      #Melakukan Menjalankan perintah dockerlint
+      - docker/dockerlint:
+          #Setting lokasi Dockerfile
+          dockerfile: ./Dockerfile
+          #Setting bila ada warning akan dibilang sebagai error
+          treat-warnings-as-errors: true
+  #Setting build-app-karsajobs-ui
+  build-app-karsajobs-ui:
+    #Mengunakan orbs docker dengan element docker
+    executor: docker/docker
+    #Setting steps Jobs build-app-karsajobs-ui
+    steps:
+      #Melakukan checkout script
+      - checkout
+      #Melakukan setup remote docker
+      - setup_remote_docker
+      #Melakukan menjalan command
+      - run:
+          #Command nama step
+          name: Build Image
+          #Command perintah build image
+          command: |
+            docker build -t ghcr.io/$Username/karsajobs-ui:latest .
+      #Melakukan deploy
+      - deploy:
+          #Command nama step
+          name: Push image to github
+          #Command perintah build image dan push ke github
+          command: |
+            echo $PASSWORD_GITHUB | docker login ghcr.io -u $Username --password-stdin
+            docker push ghcr.io/$Username/karsajobs-ui:latest
+
+#Setting Workflows
+workflows:
+  #Versi workflows
+  version: 2
+  #Setting Workflow
+  workflow:
+    #Menjalankan jobs
+    jobs:
+      #Menjalankan job lint-dockerfile
+      - lint-dockerfile
+      #Menjalankan job build-app-karsajobs-ui
+      - build-app-karsajobs-ui
