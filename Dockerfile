@@ -10,13 +10,13 @@ COPY package*.json ./
 # Malakuakan install packages
 RUN npm install
 
-# Copy dari host ke image 
+# Copy dari host ke image
 COPY . .
 
 # Melakukan build
 RUN npm run build
 
-# mengeluarkan port 8000 
+# mengeluarkan port 8000
 EXPOSE 8000
 
 #melakukan run npm run serve ketika image di jalankan

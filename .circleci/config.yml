@@ -18,8 +18,8 @@ jobs:
       - docker/dockerlint:
           #Setting lokasi Dockerfile
           dockerfile: ./Dockerfile
-          #Setting bila ada warning akan tidak dibilang sebagai error
-          treat-warnings-as-errors: false
+          #Setting bila ada warning akan dibilang sebagai error
+          treat-warnings-as-errors: true
   #Setting build-app-karsajobs-ui
   build-app-karsajobs-ui:
     #Mengunakan orbs docker dengan element docker
