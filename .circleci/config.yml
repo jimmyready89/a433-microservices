@@ -19,10 +19,12 @@ jobs:
           command: go test -v -short --count=1 $(go list ./...)
           name: go test
   build-app-karsajobs:
-    executor: docker/machine
+    docker:
+      - image: cimg/base:2022.06
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          version: 20.10.14
       - run:
           name: Save Docker image layer cache
           command: |
