@@ -1,17 +1,29 @@
-FROM golang:1.15-alpine #Base Image
+#Base Image
+FROM golang:1.15-alpine
 
-WORKDIR /go/src/github.com/dicodingacademy/karsajobs #memindahkan lokasi default current folder ketikan melakukan copy menjadi /go/src/github.com/dicodingacademy/karsajobs
-ENV GO111MODULE=on #Setting environment GO111MODULE dengan value on
-ENV APP_PORT=8080 #Setting environment APP_PORT dengan value 8080
+#memindahkan lokasi default current folder ketikan melakukan copy menjadi /go/src/github.com/dicodingacademy/karsajobs
+WORKDIR /go/src/github.com/dicodingacademy/karsajobs
+#Setting environment GO111MODULE dengan value on
+ENV GO111MODULE=on
+#Setting environment APP_PORT dengan value 8080
+ENV APP_PORT=8080
 
-COPY go.mod . #Copy file go.mod ke image
-COPY go.sum . #Copy file go.sum ke image
-RUN go mod download #Melakukkan download packages 
+#Copy file go.mod ke image
+COPY go.mod .
+#Copy file go.sum ke image
+COPY go.sum .
+#Melakukkan download packages 
+RUN go mod download
 
-COPY . . #Melakukan copy file dari host ke image
-RUN mkdir /build; \ # membuat folder build
+#Melakukan copy file dari host ke image
+COPY . .
+# membuat folder build
+RUN mkdir /build; \
 
-go build -o /build/ ./... # membuat folder build
+# membuat folder build
+go build -o /build/ ./...
 
-EXPOSE 8080 # mengeluarkan port 8080
-CMD ["/build/web"] # melakukan run /build/web ketika image di jalankan
+# mengeluarkan port 8080
+EXPOSE 8080
+# melakukan run /build/web ketika image di jalankan
+CMD ["/build/web"]
