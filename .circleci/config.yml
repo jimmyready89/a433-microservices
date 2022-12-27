@@ -16,7 +16,8 @@ jobs: #Setting jobs
     steps: #Setting steps Jobs test-app
       - checkout #Melakukan checkout script
       - run: #Melakukan menjalan command
-          command: go test -v -short --count=1 $(go list ./...) #Command perintah unit test
+          #Command perintah unit test
+          command: go test -v -short --count=1 $(go list ./...)
           name: run unit test #Command nama step
   build-app-karsajobs: #Setting build-app-karsajobs
     executor: docker/docker #Mengunakan orbs docker dengan element docker
@@ -29,7 +30,8 @@ jobs: #Setting jobs
             docker build -t ghcr.io/$Username/karsajobs:latest .
       - deploy: #Melakukan deploy
           name: Push image to github #Command nama step
-          command: | #Command perintah build image dan push ke github
+          #Command perintah build image dan push ke github
+          command: |
             echo $PASSWORD_GITHUB | docker login ghcr.io -u $Username --password-stdin
             docker push ghcr.io/$Username/karsajobs:latest
 
