@@ -18,9 +18,25 @@ jobs:
       - run:
           command: go test -v -short --count=1 $(go list ./...)
           name: go test
+  build-app-karsajobs:
+    executor: docker/machine
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Save Docker image layer cache
+          command: |
+            docker build -t ghcr.io/$Username/karsajobs:latest .
+      - deploy:
+          name: Push application Docker image
+          command: |
+            echo $PASSWORD_GITHUB | docker login ghcr.io -u $Username --password-stdin
+            docker push ghcr.io/$Username/karsajobs:latest
+
 workflows:
   version: 2
   workflow:
     jobs:
       - lint-dockerfile
       - test-app
+      - build-app-karsajobs
