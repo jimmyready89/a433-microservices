@@ -1,44 +1,80 @@
-version: 2.1 #Version CircleCI
-orbs: #orbs
-  docker: circleci/docker@2.2.0 #Declare orbs docker dengan isi circleci/docker@2.2.0
-jobs: #Setting jobs
-  lint-dockerfile: #Setting Jobs lint-dockerfile
-    executor: docker/machine #Mengunakan orbs docker dengan element machine
-    steps: #Setting steps Jobs lint-dockerfile
-      - checkout #Melakukan checkout script
-      - docker/dockerlint: #Melakukan Menjalankan perintah dockerlint
-          dockerfile: ./Dockerfile #Setting lokasi Dockerfile
-          treat-warnings-as-errors: true #Setting bila ada warning akan dibilang sebagai error
-  test-app: #Setting Jobs test-app
-    docker: #Setting docker image yang digunakan di jobs test-app
-      - image: cimg/go:1.18.1 #Mengunakan docker image go
-    resource_class: large #Setting resource class
-    steps: #Setting steps Jobs test-app
-      - checkout #Melakukan checkout script
-      - run: #Melakukan menjalan command
+#Version CircleCI
+version: 2.1
+#orbs
+orbs:
+  #Declare orbs docker dengan isi circleci/docker@2.2.0
+  docker: circleci/docker@2.2.0
+#Setting jobs
+jobs:
+  #Setting Jobs lint-dockerfile
+  lint-dockerfile:
+    #Mengunakan orbs docker dengan element machine
+    executor: docker/machine
+    #Setting steps Jobs lint-dockerfile
+    steps:
+      #Melakukan checkout script
+      - checkout
+      #Melakukan Menjalankan perintah dockerlint
+      - docker/dockerlint:
+          #Setting lokasi Dockerfile
+          dockerfile: ./Dockerfile
+          #Setting bila ada warning akan dibilang sebagai error
+          treat-warnings-as-errors: true
+  #Setting Jobs test-app
+  test-app:
+    #Setting docker image yang digunakan di jobs test-app
+    docker:
+    #Mengunakan docker image go
+      - image: cimg/go:1.18.1
+    #Setting resource class
+    resource_class: large 
+    #Setting steps Jobs test-app
+    steps:
+      #Melakukan checkout script
+      - checkout
+      #Melakukan menjalan command
+      - run:
           #Command perintah unit test
           command: go test -v -short --count=1 $(go list ./...)
-          name: run unit test #Command nama step
-  build-app-karsajobs: #Setting build-app-karsajobs
-    executor: docker/docker #Mengunakan orbs docker dengan element docker
-    steps: #Setting steps Jobs  build-app-karsajobs
-      - checkout #Melakukan checkout script
-      - setup_remote_docker #Melakukan setup remote docker
-      - run: #Melakukan menjalan command
-          name: Build Image #Command nama step
-          command: | #Command perintah build image
+          #Command nama step
+          name: run unit test
+  #Setting build-app-karsajobs
+  build-app-karsajobs:
+    #Mengunakan orbs docker dengan element docker
+    executor: docker/docker
+    #Setting steps Jobs build-app-karsajobs
+    steps:
+      #Melakukan checkout script
+      - checkout
+      #Melakukan setup remote docker
+      - setup_remote_docker
+      #Melakukan menjalan command
+      - run:
+          #Command nama step
+          name: Build Image
+          #Command perintah build image
+          command: |
             docker build -t ghcr.io/$Username/karsajobs:latest .
-      - deploy: #Melakukan deploy
-          name: Push image to github #Command nama step
+      #Melakukan deploy
+      - deploy:
+          #Command nama step
+          name: Push image to github
           #Command perintah build image dan push ke github
           command: |
             echo $PASSWORD_GITHUB | docker login ghcr.io -u $Username --password-stdin
             docker push ghcr.io/$Username/karsajobs:latest
 
-workflows: #Setting Workflows
-  version: 2 #Versi workflows
-  workflow: #Setting Workflow
-    jobs: #Menjalankan jobs
-      - lint-dockerfile #Menjalankan job lint-dockerfile
-      - test-app #Menjalankan job test-app
-      - build-app-karsajobs #Menjalankan job build-app-karsajobs
+#Setting Workflows
+workflows:
+  #Versi workflows
+  version: 2
+  #Setting Workflow
+  workflow:
+    #Menjalankan jobs
+    jobs:
+      #Menjalankan job lint-dockerfile
+      - lint-dockerfile
+      #Menjalankan job test-app
+      - test-app
+      #Menjalankan job build-app-karsajobs
+      - build-app-karsajobs
