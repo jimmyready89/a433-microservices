@@ -12,16 +12,15 @@ ENV APP_PORT=8080
 COPY go.mod .
 #Copy file go.sum ke image
 COPY go.sum .
-#Melakukkan download packages 
+#Melakukkan download packages
 RUN go mod download
 
 #Melakukan copy file dari host ke image
 COPY . .
 # membuat folder build
-RUN mkdir /build; \
-
-# membuat folder build
-go build -o /build/ ./...
+RUN mkdir /build;
+# Melakukan build
+RUN go build -o /build/ ./...
 
 # mengeluarkan port 8080
 EXPOSE 8080
