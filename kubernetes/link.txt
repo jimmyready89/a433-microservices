@@ -1,0 +1,3 @@
+Repo : https://github.com/jimmyready89/a433-microservices
+karsajobs-ui : https://github.com/jimmyready89/a433-microservices/pkgs/container/karsajobs-ui
+karsajobs : https://github.com/jimmyready89/a433-microservices/pkgs/container/karsajobs
