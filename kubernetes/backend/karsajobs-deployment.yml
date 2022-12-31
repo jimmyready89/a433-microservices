@@ -28,6 +28,12 @@ spec:
           - name: APP_PORT
             value: "8080"
           - name: MONGO_USER
-            value: "admin"
+            valueFrom:
+              secretKeyRef:
+                name: mongodb-secret
+                key: MONGO_ROOT_USERNAME
           - name: MONGO_PASS
-            value: "supersecretpassword"
+            valueFrom:
+              secretKeyRef:
+                name: mongodb-secret
+                key: MONGO_ROOT_PASSWORD
